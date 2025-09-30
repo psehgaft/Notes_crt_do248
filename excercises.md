@@ -5,6 +5,7 @@ sudo -u jboss /opt/jboss-eap-7.4/bin/standalone.sh
 
 
 # Jboss EAP Stand Alone
+
 sudo -u jboss  ./standalone.sh -Djboss.server.base.dir=/home-dir/jboss/standalone/
 sudo -u jboss  cp -r configuration deployments lib /home-dir/jboss/standalone2
 sudo -u jboss /opt/jboss-eap-7.4/bin/standalone.sh -Djboss.server.base.dir=/opt/jboss/standalone2/ -Djboss.socket.binding.port-offset=10000
@@ -39,8 +40,9 @@ sudo -u jboss ./domain.sh -Djboss.domain.base.dir=/home-dir/domain/ --host-confi
 ssh servera
 ssudo cp -r /home-dir/jboss/domain /home-dir/
 sudo chown -R jboss:jboss /home-dir/domain
+
 EDIT: /opt/domain/configuration/host-slave.xml
-´´´
+´´´config.xml
 <host name="servera" xmlns="urn:jboss:domain:16.0">
 <host name="servera"  xmlns="urn:jboss:domain:16.0">
 ...ouput omitted...
@@ -59,6 +61,7 @@ EDIT: /opt/domain/configuration/host-slave.xml
    <inet-address value="${jboss.bind.address.management:x.y.w.1}"/>
 </interface>
 ´´´
+
 cd /home-dir/jboss/bin
 sudo -u jboss ./domain.sh -Djboss.domain.base.dir=/opt/domain/ --host-config=host-slave.xml -Djboss.domain.master.address=x.y.w.0 #[Domain]
 
