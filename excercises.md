@@ -32,20 +32,25 @@ cd /subsystem=logging/console-handler=CONSOLE
 ---
 
 deploy /home-dir/deploy/app.war
- ```
+```
 
 # Jboss EAP Domain
 
+```sh
 sudo cp -r /home-dir/jboss/domain /home-dir/
 sudo chown -R jboss:jboss /home-dir/domain
 sudo -u jboss vim /home-dir/home-dir/configuration/host-master.xml
 cd /home-dir/jboss/bin
 sudo -u jboss ./domain.sh -Djboss.domain.base.dir=/home-dir/domain/ --host-config=host-master.xml
+ ```
 
 ## Server A
+
+```sh
 ssh servera
 ssudo cp -r /home-dir/jboss/domain /home-dir/
 sudo chown -R jboss:jboss /home-dir/domain
+```
 
 EDIT: /opt/domain/configuration/host-slave.xml
  ```config.xml
@@ -102,7 +107,16 @@ EDIT: /opt/domain/configuration/host-slave.xml
 </interface>
  ```
 
+# Deploy App domain
+
+ ```sh
+sudo -u jboss /opt/jboss-eap-7.4/bin/domain.sh -Djboss.domain.base.dir=/opt/domain/ --host-config=host-master.xml
+ ```
+
+On SeverA and ServerB
+
  ```sh
 cd /home-dir/jboss/bin
-sudo -u jboss ./domain.sh -Djboss.domain.base.dir=/opt/domain/ --host-config=host-slave.xml -Djboss.domain.master.address=x.y.w.0 #[Domain]
+sudo -u jboss /home-dir/jboss/domain -Djboss.domain.base.dir=/home-dir/domain  --host-config=host-master.xml
+sudo -u jboss /home-dir/jboss//bin/domain.sh -Djboss.domain.base.dir=/home-dir/domain/ -Djboss.domain.master.address=x.y.w.0  --host-config=host-slave.xml
  ```
