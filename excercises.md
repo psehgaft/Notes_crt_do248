@@ -120,3 +120,26 @@ cd /home-dir/jboss/bin
 sudo -u jboss /home-dir/jboss/domain -Djboss.domain.base.dir=/home-dir/domain  --host-config=host-master.xml
 sudo -u jboss /home-dir/jboss//bin/domain.sh -Djboss.domain.base.dir=/home-dir/domain/ -Djboss.domain.master.address=x.y.w.0  --host-config=host-slave.xml
  ```
+
+# Configuring Servers in a Managed Domain
+
+ ```sh
+sudo -u jboss /opt/jboss-eap-7.4/bin/domain.sh -Djboss.domain.base.dir=/opt/domain/ --host-config=host-master.xml
+sudo -u jboss /opt/jboss-eap-7.4/bin/domain.sh -Djboss.domain.base.dir=/opt/domain/ -Djboss.domain.master.address=172.25.250.9 --host-config=host-slave.xml
+sudo -u jboss /opt/jboss-eap-7.4/bin/domain.sh -Djboss.domain.base.dir=/opt/domain/ -Djboss.domain.master.address=172.25.250.9 --host-config=host-slave.xml
+sudo -u jboss /opt/jboss-eap-7.4/bin/jboss-cli.sh --connect --controller=172.25.250.9:9990
+ ```
+
+ ```jboss
+/server-group=Group1:add (profile=full,socket-binding-group=full-sockets)
+/server-group=Group2:add (profile=full,socket-binding-group=full-sockets)
+server-group=Group1:read-resource
+/server-group=Group2:read-resource
+/host=servera/server-config=servera.1:add(auto-start=true,group=Group1,socket-binding-port-offset=0)
+/host=servera/server-config=servera.2:add(auto-start=true,group=Group2,socket-binding-port-offset=100)
+/host=serverb/server-config=serverb.1:add(auto-start=true,group=Group1,socket-binding-port-offset=0)
+/host=serverb/server-config=serverb.2:add(auto-start=true,group=Group2,socket-binding-port-offset=100)
+/server-group=Group1:start-servers(blocking=true)
+/server-group=Group2:start-servers(blocking=true)
+deploy /tmp/helloworld-mdb.war --server-groups=Group1
+ ```
