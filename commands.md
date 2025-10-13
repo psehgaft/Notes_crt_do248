@@ -1,4 +1,7 @@
-´´´sh
+# Usefull commands
+
+ ```sh
+
 $  ./domain.sh 
 -Djboss.domain.base.dir=/home/student/JB248/labs/domain/machine1/domain/ 
 --host-config=host-master.xml
@@ -52,4 +55,4 @@ $ ./standalone.sh ---server-config standalone-full.xml
 
 $ ./standalone.sh --c standalone-full.xml
 
-´´´
+ ```
