@@ -2,7 +2,9 @@
 
 ## Install and manage JBoss EAP
 
+```sh
 java -jar [instalation.jar file]
+```
 
 - Examples
 - Logs
@@ -23,6 +25,11 @@ java -jar [instalation.jar file]
 - Using HA  profile
 
 ## Configure JBoss Web Connectors
+
+```sh
+/subsystem=undertow/server=\
+default-server/ajp-listener=ajp:add(socket-binding=ajp)
+```
 
 ## Manage applications
 
@@ -49,6 +56,11 @@ package
 jar -cf [appfile.war]
 ```
 
+or
+
+```sh
+/subsystem=undertow/configuration=handler/file=welcome-content:write-attribute(name=path,value="/")
+```
 
 
 
