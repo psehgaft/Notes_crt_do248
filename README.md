@@ -27,11 +27,26 @@ java -jar [instalation.jar file]
 ## Configure JBoss Web Connectors
 
 ```sh
-/subsystem=undertow/server=\
-default-server/ajp-listener=ajp:add(socket-binding=ajp)
+
+./jboss-cli.sh -c
+
+/subsystem=undertow/server=sever-01/ajp-listener=ajp:add(socket-binding=ajp)
+
+/subsystem=undertow/server=sever-01/http-listener=default:write-attribute(name=max-connections, value=200)
+
+reload
 ```
 
 ## Manage applications
+
+
+```sh
+/subsystem=undertow/server=sever-01/host=default-host:write-attribute(name=default-web-module,value=app.war )
+```
+
+---
+
+or
 
 Unpoacage
 
@@ -55,14 +70,6 @@ package
 ```sh
 jar -cf [appfile.war]
 ```
-
-or
-
-```sh
-/subsystem=undertow/configuration=handler/file=welcome-content:write-attribute(name=path,value="/")
-```
-
-
 
 ## Files
 - Context
