@@ -77,6 +77,27 @@ jar -cf [appfile.war]
 ## Configure JBoss EAP security
 - Security Domain
 
+```sh
+/subsystem=security/security-domain=bksecurity-domain:add(cache-type=default)
+```
+
+```xml
+<security-domain name="db-domain" cache-type="default"> 
+  <authentication>
+    <login-module code="Database" flag="required"> 
+      <module-option name="dsJndiName" 
+            value="java:jboss/datasources/test-ds"/>
+      <module-option name="principalsQuery"
+            value="SELECT password FROM users WHERE username = ?"/>
+      <module-option name="rolesQuery"
+            value="SELECT role, 'Roles' FROM roles WHERE username = ?"/>
+      <module-option name="hashAlgorithm" value="SHA-256"/> 
+      <module-option name="hashEncoding" value="base64"/> 
+    </login-module>
+  </authentication>
+</security-domain>
+```
+
 ## Configuring Java Messaging Service
 - JMS
 
