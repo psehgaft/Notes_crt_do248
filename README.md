@@ -13,6 +13,13 @@ java -jar [instalation.jar file]
 
 ## Configure JBoss EAP domains, hosts and servers
 
+```conf
+# Specify options to pass to the Java VM.
+#
+if [ "x$JAVA_OPTS" = "x" ]; then
+ JAVA_OPTS="-Xms1303m -Xmx1303m -Xss128k -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m ..."
+```
+
 ### File
 - host.xml
   - change name
