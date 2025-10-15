@@ -20,6 +20,13 @@ if [ "x$JAVA_OPTS" = "x" ]; then
  JAVA_OPTS="-Xms1303m -Xmx1303m -Xss128k -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m ..."
 ```
 
+```sh
+/host=host3/server-config=serverX \
+ /jvm=serverX-jvm:add \
+ (heap-size=512m,max-heap-size=1500m, \
+ jvm-options=["-server","-XX:ParallelGCThreads=4"])
+```
+
 ### File
 - host.xml
   - change name
