@@ -123,3 +123,33 @@ jar -cf [appfile.war]
 ## Configuring Java Messaging Service
 - JMS
 
+
+```xml
+<subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
+ <server name="default">
+ ....
+ <connection-factory
+ name="InVmConnectionFactory"
+ connectors="in-vm"
+ entries="java:/ConnectionFactory" />
+ <connection-factory
+ name="RemoteConnectionFactory"
+ connectors="http-connector"
+ entries="java:jboss/exported/jms/RemoteConnectionFactory"/>
+ <pooled-connection-factory
+ name="activemq-ra" transaction="xa"
+ connectors="in-vm"
+ entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" />
+ ...
+ </server>
+</subsystem>
+
+```
+
+```sh
+cd /profile=full/subsystem=messaging-activemq/​server=default
+
+./pooled-connection-factory=mycf:add(\
+connectors=[in-vm], entries=[java:/jms/MyCF])
+```
+
