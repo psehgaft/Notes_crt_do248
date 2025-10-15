@@ -26,7 +26,31 @@ java -jar [instalation.jar file]
 
 ## Manage applications
 
+Unpoacage
+
+```sh
 jar -xd [appfile.war]
+```
+
+From the application perspective, you must use the `$WEBAPP/WEB-INF/jbossweb.xml` file within the application to define the application context root, and to
+reference the virtual host and the server instance:
+
+```xml
+<jboss-web>
+ <context-root>/</context-root>
+ <virtual-host>version-host</virtual-host>
+ <server-instance>default-server</server-instance>
+</jboss-web>
+```
+
+package
+
+```sh
+jar -cf [appfile.war]
+```
+
+
+
 
 ## Files
 - Context
