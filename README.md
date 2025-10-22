@@ -93,6 +93,7 @@ jar -cf [appfile.war]
 
 ```sh
 /subsystem=security/security-domain=bksecurity-domain:add(cache-type=default)
+/subsystem=security/security-domain=bksecurity-domain:add(cache-type=default)
 
 /subsystem=security/security-domain= \
    db-domain/authentication=classic:add \
