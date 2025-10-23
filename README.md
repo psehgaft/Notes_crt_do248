@@ -28,8 +28,43 @@ if [ "x$JAVA_OPTS" = "x" ]; then
 ```
 
 ### File
-- host.xml
+- host-master.xml
   - change name
+  - management IP
+ 
+ ```xml
+<host name="NAME" xmlns="urn:jboss:domain:16.0">
+...
+<interfaces>
+    <interface name="management">
+        <inet-address value="${jboss.bind.address.management:w.x.y.z}"/>
+    </interface>
+</interfaces>
+ ```
+
+- host-slave.xml
+  - change name
+  - management IP
+ ```xml
+<host name="NAME" xmlns="urn:jboss:domain:16.0">
+...
+    <management>
+        <security-realms>
+            <security-realm name="ManagementRealm">
+                <server-identities>
+                    <secret value="cmVkaGF0MTIz"/>
+                </server-identities>
+...
+<interface name="public">
+   <inet-address value="${jboss.bind.address:w.x.y.z}"/>
+</interface>
+<interfaces>
+    <interface name="management">
+        <inet-address value="${jboss.bind.address.management:w.x.y.z}"/>
+    </interface>
+</interfaces>
+ ```
+
 
 ### WebConsole
 - ServerGroup
