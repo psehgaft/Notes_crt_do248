@@ -29,22 +29,23 @@ if [ "x$JAVA_OPTS" = "x" ]; then
 
 ### File
 - host-master.xml
-  - change name
-  - management IP
+  - Change name
+  - Management IP
  
  ```xml
 <host name="NAME" xmlns="urn:jboss:domain:16.0">
 ...
 <interfaces>
     <interface name="management">
-        <inet-address value="${jboss.bind.address.management:w.x.y.z}"/>
+        <inet-address value="${jboss.bind.address.management:w.x.y.a}"/>
     </interface>
 </interfaces>
  ```
 
 - host-slave.xml
-  - change name
-  - management IP
+  - Change name
+  - Management IP
+  - Bind IP
  ```xml
 <host name="NAME" xmlns="urn:jboss:domain:16.0">
 ...
@@ -55,12 +56,14 @@ if [ "x$JAVA_OPTS" = "x" ]; then
                     <secret value="cmVkaGF0MTIz"/>
                 </server-identities>
 ...
+-Djboss.domain.master.address=w.x.y.a
+...
 <interface name="public">
-   <inet-address value="${jboss.bind.address:w.x.y.z}"/>
+   <inet-address value="${jboss.bind.address:w.x.y.b}"/>
 </interface>
 <interfaces>
     <interface name="management">
-        <inet-address value="${jboss.bind.address.management:w.x.y.z}"/>
+        <inet-address value="${jboss.bind.address.management:w.x.y.b}"/>
     </interface>
 </interfaces>
  ```
@@ -79,9 +82,9 @@ if [ "x$JAVA_OPTS" = "x" ]; then
 
 ./jboss-cli.sh -c
 
-/subsystem=undertow/server=sever-01/ajp-listener=ajp:add(socket-binding=ajp)
+/subsystem=undertow/server=default-server/ajp-listener=ajp:add(socket-binding=ajp)
 
-/subsystem=undertow/server=sever-01/http-listener=default:write-attribute(name=max-connections, value=200)
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-connections, value=200)
 
 reload
 ```
@@ -90,7 +93,7 @@ reload
 
 
 ```sh
-/subsystem=undertow/server=sever-01/host=default-host:write-attribute(name=default-web-module,value=app.war )
+/subsystem=undertow/server=default-server/host=default-host:writeattribute(name=default-web-module,value=myapp.war ) 
 ```
 
 ---
@@ -128,7 +131,6 @@ jar -cf [appfile.war]
 
 ```sh
 /subsystem=security/security-domain=bksecurity-domain:add(cache-type=default)
-/subsystem=security/security-domain=bksecurity-domain:add(cache-type=default)
 
 /subsystem=security/security-domain= \
    db-domain/authentication=classic:add \
@@ -159,33 +161,12 @@ jar -cf [appfile.war]
 ## Configuring Java Messaging Service
 - JMS
 
-
-```xml
-<subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
- <server name="default">
- ....
- <connection-factory
- name="InVmConnectionFactory"
- connectors="in-vm"
- entries="java:/ConnectionFactory" />
- <connection-factory
- name="RemoteConnectionFactory"
- connectors="http-connector"
- entries="java:jboss/exported/jms/RemoteConnectionFactory"/>
- <pooled-connection-factory
- name="activemq-ra" transaction="xa"
- connectors="in-vm"
- entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" />
- ...
- </server>
-</subsystem>
-
-```
-
 ```sh
 cd /profile=full/subsystem=messaging-activemq/​server=default
 
-./pooled-connection-factory=mycf:add(\
-connectors=[in-vm], entries=[java:/jms/MyCF])
+./pooled-connection-factory=mycf:add(connectors=[in-vm], entries=[java:/jms/MyCF])
+./jms-queue=TestQueue:add(entries=["java:/jms/queue/AD248TestQueue"])
+
+Messaging → Server → default → Destinations.[JMS Queue]
 ```
 
